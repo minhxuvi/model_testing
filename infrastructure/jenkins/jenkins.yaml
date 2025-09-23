@@ -1,0 +1,10 @@
+# jenkins.yaml
+jenkins:
+  systemMessage: "Jenkins configured with Configuration as Code."
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "${ADMIN_PASSWORD}"
+  # You can add more configurations here, like tools, nodes, etc.
