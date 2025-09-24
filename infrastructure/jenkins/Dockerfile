@@ -7,8 +7,13 @@ RUN jenkins-plugin-cli --plugins \
     git:latest \
     workflow-aggregator:latest
 
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Add the UV binary directory to the PATH
+ENV PATH="/var/jenkins_home/.local/bin:${PATH}"
+
 # Copy your JCasC configuration file into the container
 COPY jenkins.yaml /var/jenkins_home/jenkins.yaml
 
 # Set the environment variable to tell Jenkins where to find the config file
-ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml
+# ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml

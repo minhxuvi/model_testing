@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qa-app
+  template:
+    metadata:
+      labels:
+        app: qa-app
+    spec:
+      containers:
+      - name: qa-app
+        image: qa-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-app-service
+spec:
+  selector:
+    app: qa-app
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: NodePort
+  sessionAffinity: None  # Ensure no session stickiness
