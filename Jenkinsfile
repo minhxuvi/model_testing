@@ -55,8 +55,8 @@ spec:
             steps {
                 container('python') {
                     // Install uv if needed
-                    sh 'curl -LsSf https://astral.sh/uv/install.sh | sh'
-                    sh 'export PATH="$HOME/.local/bin:$PATH" && uv run main.py'
+                    sh 'pip install uv'
+                    sh 'uv run main.py'
                 }
             }
         }
