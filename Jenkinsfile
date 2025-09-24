@@ -13,10 +13,43 @@ spec:
     command:
     - cat
     tty: true
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    lifecycle:
+      postStart:
+        exec:
+          command:
+          - /bin/sh
+          - -c
+          - touch /tmp/healthy
 """
+            // Increase pod template timeout
+            podRetention never()
+            activeDeadlineSeconds 1200
+            idleMinutes 5
         }
     }
+
+    options {
+        timeout(time: 20, unit: 'MINUTES')
+        retry(3)
+    }
+
     stages {
+        stage('Wait for Pod') {
+            steps {
+                script {
+                    // Wait a bit for pod to be fully ready
+                    sleep(time: 30, unit: 'SECONDS')
+                }
+            }
+        }
+
         stage('Run Application') {
             steps {
                 container('python') {

@@ -12,6 +12,7 @@ spec:
       labels:
         app: jenkins
     spec:
+      serviceAccountName: jenkins  # Add this line
       containers:
       - name: jenkins
         image: model_testing_jenkins:latest
@@ -37,10 +38,8 @@ spec:
   selector:
     app: jenkins
   ports:
-  - name: web
-    port: 8080
-    targetPort: 8080
-  - name: agent
-    port: 50000
-    targetPort: 50000
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
   type: NodePort
