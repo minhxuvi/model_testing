@@ -34,6 +34,16 @@ ollama_host = get_ollama_host()
 # print(f"Using Ollama host: {ollama_host}")
 client = ollama.Client(host=ollama_host)
 
+
+def get_pod_info():
+    """Get pod identification information"""
+    pod_name = os.environ.get("HOSTNAME", "unknown")
+    pod_ip = os.environ.get("POD_IP", "unknown")
+    node_name = os.environ.get("NODE_NAME", "unknown")
+
+    return {"pod_name": pod_name, "pod_ip": pod_ip, "node_name": node_name}
+
+
 # def ollama_health_check():
 #     try:
 #         response = ollama.chat(
@@ -81,3 +91,7 @@ def generate(prompt: str):
             "error": f"Could not connect to Ollama at {ollama_host}",
             "details": str(e),
         }
+
+
+if __name__ == "__main__":
+    print(get_pod_info())
