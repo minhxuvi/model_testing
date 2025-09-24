@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "fastapi",
+#     "ollama",
+# ]
+# ///
+
 import os
 import socket
 
