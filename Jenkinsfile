@@ -13,20 +13,16 @@ spec:
     command:
     - cat
     tty: true
+    env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
     readinessProbe:
       exec:
-        command:
-        - cat
-        - /tmp/healthy
-      initialDelaySeconds: 5
+        command: ["python3", "-c", "print('ready')"]
+      initialDelaySeconds: 30
       periodSeconds: 5
-    lifecycle:
-      postStart:
-        exec:
-          command:
-          - /bin/sh
-          - -c
-          - touch /tmp/healthy
+      timeoutSeconds: 3
+      failureThreshold: 3
 """
             // Increase pod template timeout
             podRetention never()
@@ -41,11 +37,16 @@ spec:
     }
 
     stages {
-        stage('Wait for Pod') {
+        stage('Verify Pod Ready') {
             steps {
-                script {
-                    // Wait a bit for pod to be fully ready
-                    sleep(time: 30, unit: 'SECONDS')
+                container('python') {
+                    script {
+                        // Simple readiness check
+                        sh 'echo "Pod is ready, Python version:"'
+                        sh 'python3 --version'
+                        sh 'whoami'
+                        sh 'pwd'
+                    }
                 }
             }
         }
