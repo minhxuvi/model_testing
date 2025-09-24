@@ -65,3 +65,7 @@ def generate(prompt: str):
 def health():
     """Health check endpoint with pod info"""
     return get_pod_info()
+
+
+if __name__ == "__main__":
+    print(get_pod_info())
