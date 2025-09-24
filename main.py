@@ -38,24 +38,24 @@ client = ollama.Client(host=ollama_host)
 #         return False
 
 
-# def generate_text(prompt: str):
-#     try:
-#         response = client.chat(
-#             model="llama3.1:8b",
-#             messages=[{"role": "user", "content": prompt}],
-#             options={
-#                 "temperature": 0,  # Makes output deterministic
-#                 "seed": 0,  # Optional: ensures same results across runs
-#             },
-#         )
-#         return response["message"]["content"]
-#     except Exception as e:
-#         print(f"Error connecting to Ollama: {e}")
-#         return f"Error: Could not connect to Ollama at {ollama_host}"
+def generate_text(prompt: str):
+    try:
+        response = client.chat(
+            model="llama3.1:8b",
+            messages=[{"role": "user", "content": prompt}],
+            options={
+                "temperature": 0,  # Makes output deterministic
+                "seed": 0,  # Optional: ensures same results across runs
+            },
+        )
+        return response["message"]["content"]
+    except Exception as e:
+        print(f"Error connecting to Ollama: {e}")
+        return f"Error: Could not connect to Ollama at {ollama_host}"
 
 
 # Example usage
-# print(generate_text("Hi."))
+print(generate_text("Hi."))
 # print(ollama_health_check())
 app = FastAPI()
 
