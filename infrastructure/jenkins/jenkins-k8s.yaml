@@ -23,12 +23,22 @@ spec:
         env:
         - name: ADMIN_PASSWORD
           value: "admin123"
+        - name: JAVA_OPTS
+          value: "-Djenkins.install.runSetupWizard=false -Djenkins.model.Jenkins.slaveAgentPort=50000"
+        - name: CASC_JENKINS_CONFIG
+          value: "/var/jenkins_home/jenkins.yaml"
         volumeMounts:
         - mountPath: /var/jenkins_home
           name: jenkins-home
+        - mountPath: /var/jenkins_home/jenkins.yaml
+          name: jenkins-config
+          subPath: jenkins.yaml
       volumes:
       - name: jenkins-home
         emptyDir: {}
+      - name: jenkins-config
+        configMap:
+          name: jenkins-config
 ---
 apiVersion: v1
 kind: Service
@@ -49,3 +59,18 @@ spec:
       targetPort: 50000
       nodePort: 30001
   type: NodePort
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-config
+data:
+  jenkins.yaml: |
+    jenkins:
+      systemMessage: "Jenkins configured with Configuration as Code."
+      securityRealm:
+        local:
+          allowsSignup: false
+          users:
+            - id: "admin"
+              password: "${ADMIN_PASSWORD}"

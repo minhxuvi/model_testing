@@ -1,6 +1,21 @@
-# Getting Started
+# Getting Star## Deploy Jenkins to Kubernetes
 
-## Start the Ollama server
+# Create kind cluster with port mapping (one time setup)
+
+kind create cluster --name qa-cluster --config ./infrastructure/kind-config.yaml
+
+docker build -t model_testing_jenkins:latest ./infrastructure/jenkins
+kind load docker-image model_testing_jenkins:latest --name qa-cluster
+
+Create service account, role, and role binding (one time setup)
+kubectl apply -f ./infrastructure/jenkins/jenkins-rbac.yaml
+
+kubectl apply -f ./infrastructure/jenkins/jenkins-k8s.yaml
+or
+kubectl rollout restart deployment/jenkins
+kubectl rollout status deployment/jenkins
+
+# Access Jenkins at <http://localhost:8080> (mapped to NodePort 30000) the Ollama server
 
 OLLAMA_HOST=0.0.0.0:11434 ollama serve &
 or
@@ -22,7 +37,9 @@ or
 kubectl rollout restart deployment/jenkins
 kubectl rollout status deployment/jenkins
 
-kubectl port-forward service/jenkins-service 8082:8080 &
+# Access Jenkins directly via NodePort at <http://localhost:30000> (no port-forward needed)
+
+# Or optionally use port-forward: kubectl port-forward service/jenkins-service 8082:8080 &
 
 ## Build and deploy the QA app to Kubernetes
 

@@ -18,4 +18,4 @@ ENV PATH="/var/jenkins_home/.local/bin:${PATH}"
 COPY jenkins.yaml /var/jenkins_home/jenkins.yaml
 
 # Set the environment variable to tell Jenkins where to find the config file
-# ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml
