@@ -37,26 +37,10 @@ spec:
     }
 
     stages {
-        stage('Verify Pod Ready') {
-            steps {
-                container('python') {
-                    script {
-                        // Simple readiness check
-                        sh 'echo "Pod is ready, Python version:"'
-                        sh 'python3 --version'
-                        sh 'whoami'
-                        sh 'pwd'
-                    }
-                }
-            }
-        }
-
         stage('Run Application') {
             steps {
                 container('python') {
-                    // Install uv if needed
-                    sh 'pip install uv'
-                    sh 'uv run main.py'
+                    sh 'curl "http://qa-app-service:80/health"'
                 }
             }
         }
