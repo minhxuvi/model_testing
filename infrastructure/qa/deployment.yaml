@@ -36,7 +36,8 @@ spec:
   selector:
     app: qa-app
   ports:
-  - port: 80
-    targetPort: 8000
+  - port: 80           # Service port (internal cluster access)
+    targetPort: 8000   # Container port (where your app actually runs)
+    nodePort: 30080    # Node port (external cluster access)
   type: NodePort
   sessionAffinity: None  # Ensure no session stickiness
