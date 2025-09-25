@@ -61,3 +61,11 @@ Your Browser    →    Kubernetes    →    Service     →    QA App
 (localhost)          Cluster           Load Balancer    Container
 
 Browser → localhost:8091 → Kind Port Mapping → NodePort 30080 → Service Port 80 → Container Port 8000
+
+## Set up kubernetes in jenkins
+
+Kubernetes URL:
+<https://kubernetes.default.svc.cluster.local:443>
+Kubernetes Namespace: default
+Jenkins URL:
+<http://jenkins-service:8080>

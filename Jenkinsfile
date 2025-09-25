@@ -40,7 +40,20 @@ spec:
         stage('Run Application') {
             steps {
                 container('python') {
-                    sh 'curl "http://qa-app-service:80/health"'
+                    sh '''
+                    python3 -c "
+import urllib.request
+import urllib.error
+
+try:
+    with urllib.request.urlopen('http://qa-app-service:80/health') as response:
+        print(f'Status Code: {response.status}')
+        print(f'Response: {response.read().decode()}')
+except urllib.error.URLError as e:
+    print(f'Error: {e}')
+    exit(1)
+"
+                    '''
                 }
             }
         }
